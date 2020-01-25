@@ -14,4 +14,24 @@ router.get('/', (req, res) => {
         })
 })
 
+router.get('/:id', (req, res) => {
+    const {id} = req.params;
+
+    db.get(id)
+        .then(action => {
+            if (!action) {
+                res.status(404).json({
+                    error: 'Invalid id'
+                })
+            } else {
+                res.status(200).json(action)
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: 'The project could not be retrieved.'
+            })
+        })
+});
+
 module.exports = router;
