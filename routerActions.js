@@ -29,9 +29,29 @@ router.get('/:id', (req, res) => {
         })
         .catch(err => {
             res.status(500).json({
-                error: 'The project could not be retrieved.'
+                error: 'The action could not be retrieved.'
             })
         })
 });
+
+router.post('/', (req, res) => {
+    const {project_id, description, notes} = req.body;
+
+    if (!project_id || !description || !notes) {
+        res.status(400).json({
+            error: 'Please provide project_id, description, and notes for the post.'
+        })
+    }
+
+    db.insert(req.body)
+     .then(action => {
+         res.status(201).json(action)
+     })
+     .catch(err => {
+         res.status(500).json({
+             error: 'There was an error while saving the action to the database'
+         })
+     })
+})
 
 module.exports = router;
